@@ -37,10 +37,6 @@ void JsonSerializer::addVariant(const QVariant &object) {
           break;
         }
       case QMetaType::Bool:
-        {
-          m_buffer.append(object.toString());
-          break;
-        }
       case QMetaType::Int:
         {
           m_buffer.append(object.toString());
