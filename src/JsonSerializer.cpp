@@ -13,15 +13,10 @@ void JsonSerializer::addVariant(const QVariant &object) {
     switch(object.type()) {
       case QMetaType::QString:
       case QMetaType::QDateTime:
-        {
-          addString(object.toString());
-        }
+        addString(object.toString());
         break;
       case QMetaType::QVariantList:
-        {
-          QVariantList list = object.toList();
-          addArray(list);
-        }
+        addArray(object.toList());
         break;
       case QMetaType::Double:
         if (qIsInf(object.toDouble()))
@@ -30,17 +25,12 @@ void JsonSerializer::addVariant(const QVariant &object) {
           m_buffer.append(object.toString());
         break;
       case QMetaType::QVariantMap:
-        {
-          QVariantMap map = object.toMap();
-          addMap(map);
-          break;
-        }
+        addMap(object.toMap());
+        break;
       case QMetaType::Bool:
       case QMetaType::Int:
-        {
-          m_buffer.append(object.toString());
-          break;
-        }
+        m_buffer.append(object.toString());
+        break;
       default:
         m_buffer.append("null");
     }
