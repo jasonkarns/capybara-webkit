@@ -11,14 +11,12 @@ QByteArray JsonSerializer::serialize(const QVariant &object) {
 void JsonSerializer::addVariant(const QVariant &object) {
   if (object.isValid()) {
     switch(object.type()) {
-      case QMetaType::QString:
-        addString(object.toString());
+      case QMetaType::Bool:
+      case QMetaType::Int:
+        m_buffer.append(object.toString());
         break;
       case QMetaType::QDateTime:
         addString(object.toDateTime().toString(Qt::ISODate));
-        break;
-      case QMetaType::QVariantList:
-        addArray(object.toList());
         break;
       case QMetaType::Double:
         if (qIsInf(object.toDouble()))
@@ -26,12 +24,14 @@ void JsonSerializer::addVariant(const QVariant &object) {
         else
           m_buffer.append(object.toString());
         break;
+      case QMetaType::QString:
+        addString(object.toString());
+        break;
+      case QMetaType::QVariantList:
+        addArray(object.toList());
+        break;
       case QMetaType::QVariantMap:
         addMap(object.toMap());
-        break;
-      case QMetaType::Bool:
-      case QMetaType::Int:
-        m_buffer.append(object.toString());
         break;
       default:
         m_buffer.append("null");
