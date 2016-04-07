@@ -20,7 +20,7 @@ void JsonSerializer::addVariant(const QVariant &object) {
         break;
       case QMetaType::Double:
         if (qIsInf(object.toDouble()))
-          m_buffer.append("null");
+          addNull();
         else
           m_buffer.append(object.toString());
         break;
@@ -34,10 +34,10 @@ void JsonSerializer::addVariant(const QVariant &object) {
         addMap(object.toMap());
         break;
       default:
-        m_buffer.append("null");
+        addNull();
     }
   } else {
-    m_buffer.append("null");
+    addNull();
   }
 }
 
@@ -71,6 +71,10 @@ void JsonSerializer::addMap(const QVariantMap &map) {
       m_buffer.append(",");
   }
   m_buffer.append("}");
+}
+
+void JsonSerializer::addNull() {
+  m_buffer.append("null");
 }
 
 QByteArray JsonSerializer::sanitizeString(QString str) {

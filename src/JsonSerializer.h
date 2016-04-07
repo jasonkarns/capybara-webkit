@@ -13,6 +13,7 @@ class JsonSerializer : public QObject {
     void addString(const QString &string);
     void addArray(const QVariantList &list);
     void addMap(const QVariantMap &map);
+    void addNull();
     QByteArray sanitizeString(QString string);
 
     QByteArray m_buffer;
