@@ -42,19 +42,19 @@ void JsonSerializer::addVariant(const QVariant &object) {
 }
 
 void JsonSerializer::addString(const QString &string) {
-  m_buffer.append("\"");
-  m_buffer.append(sanitizeString(string));
-  m_buffer.append("\"");
+  addLiteral("\"");
+  addLiteral(sanitizeString(string));
+  addLiteral("\"");
 }
 
 void JsonSerializer::addArray(const QVariantList &list) {
-  m_buffer.append("[");
+  addLiteral("[");
   for (int i = 0; i < list.length(); i++) {
     if (i > 0)
-      m_buffer.append(",");
+      addLiteral(",");
     addVariant(list[i]);
   }
-  m_buffer.append("]");
+  addLiteral("]");
 }
 
 void JsonSerializer::addLiteral(const QString &string) {
@@ -62,23 +62,23 @@ void JsonSerializer::addLiteral(const QString &string) {
 }
 
 void JsonSerializer::addMap(const QVariantMap &map) {
-  m_buffer.append("{");
+  addLiteral("{");
   QMapIterator<QString, QVariant> iterator(map);
   while (iterator.hasNext()) {
     iterator.next();
     QString key = iterator.key();
     QVariant value = iterator.value();
     addString(key);
-    m_buffer.append(":");
+    addLiteral(":");
     addVariant(value);
     if (iterator.hasNext())
-      m_buffer.append(",");
+      addLiteral(",");
   }
-  m_buffer.append("}");
+  addLiteral("}");
 }
 
 void JsonSerializer::addNull() {
-  m_buffer.append("null");
+  addLiteral("null");
 }
 
 QByteArray JsonSerializer::sanitizeString(QString str) {
