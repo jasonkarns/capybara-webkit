@@ -13,7 +13,7 @@ void JsonSerializer::addVariant(const QVariant &object) {
     switch(object.type()) {
       case QMetaType::Bool:
       case QMetaType::Int:
-        m_buffer.append(object.toString());
+        addLiteral(object.toString());
         break;
       case QMetaType::QDateTime:
         addString(object.toDateTime().toString(Qt::ISODate));
@@ -22,7 +22,7 @@ void JsonSerializer::addVariant(const QVariant &object) {
         if (qIsInf(object.toDouble()))
           addNull();
         else
-          m_buffer.append(object.toString());
+          addLiteral(object.toString());
         break;
       case QMetaType::QString:
         addString(object.toString());
@@ -55,6 +55,10 @@ void JsonSerializer::addArray(const QVariantList &list) {
     addVariant(list[i]);
   }
   m_buffer.append("]");
+}
+
+void JsonSerializer::addLiteral(const QString &string) {
+  m_buffer.append(string);
 }
 
 void JsonSerializer::addMap(const QVariantMap &map) {
